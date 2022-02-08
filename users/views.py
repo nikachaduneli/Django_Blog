@@ -1,4 +1,3 @@
-from operator import is_
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from blog.models import Post

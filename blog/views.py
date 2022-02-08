@@ -1,5 +1,4 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render,get_object_or_404
 from django.contrib.auth.mixins import  LoginRequiredMixin, UserPassesTestMixin
 from .models import Post
 from django.contrib.auth.models import User
@@ -26,6 +25,11 @@ class PostListView(ListView):
 
 class PostDetailViev(DetailView):
   model = Post
+
+  def get_context_data(self, **kwargs):
+      context =  super().get_context_data(**kwargs)
+      context['title'] = self.object.title
+      return context
 
 class PostCreateView(LoginRequiredMixin ,CreateView):
   model = Post

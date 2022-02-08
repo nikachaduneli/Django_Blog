@@ -1,24 +1,23 @@
 {% extends "blog/base.html" %}
 
-{% block content %}
-<article class="content-section" style="display: -webkit-box;">
-  <a href="{% url 'detail_profile' post.author.id %}"> 
-    <img src="{{ post.author.profile.image.url }}" alt="Profile Picture" class="rounded-circle article-img">
-  </a>    
-    <div class="media-body form-group">
-    <div class="article-metadata">
-      <a class="mr-2" href="{% url 'detail_profile' post.author.id %}">{{ post.author }}</a>
-      <small class="text-muted">{{ post.date_posted|date:"d, M, Y "  }}</small>
-    </div>
-    <h2 class="article-title">{{ post.title }}</h2>
-    <p class="article-content">{{ post.content }}</p>
-    {%if object.author.id == user.id or user.is_staff%}
-      <div class="form-group" style="position: relative;float: right;">
-        <a class="btn button" href="{% url 'post_update' object.id %}" >Update Note</a>
-        <a class="btn btn-outline-danger" href="{% url 'post_delete' object.id %}" >Delete Note</a>
+  {% block content %}
+  <article class="content-section" style="display: -webkit-box;">
+    <a href="{% url 'detail_profile' post.author.id %}"> 
+      <img src="{{ post.author.profile.image.url }}" alt="Profile Picture" class="rounded-circle article-img">
+    </a>    
+      <div class="media-body form-group">
+      <div class="article-metadata">
+        <a class="mr-2" href="{% url 'detail_profile' post.author.id %}">{{ post.author }}</a>
+        <small class="text-muted">{{ post.date_posted|date:"d, M, Y "  }}</small>
       </div>
-    {% endif %}
-
-  </div>
-</article>
+      <h2 class="article-title">{{ post.title }}</h2>
+      <p class="article-content">{{ post.content }}</p>
+      {%if object.author.id == user.id or user.is_staff%}
+        <div class="form-group" style="position: relative;float: right;">
+          <a class="btn button" href="{% url 'post_update' object.id %}" >Update Note</a>
+          <a class="btn btn-outline-danger" href="{% url 'post_delete' object.id %}" >Delete Note</a>
+        </div>
+      {% endif %}
+     </div>
+  </article>
 {% endblock %}
