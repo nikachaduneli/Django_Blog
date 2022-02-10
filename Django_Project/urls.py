@@ -25,9 +25,22 @@ urlpatterns = [
     path('', include("blog.urls")),
     path('register/', user_views.register, name='user_register'),
     path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='user_login' ),
-    path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='user_logout' ),   
+    path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='user_logout' ),
+    path('password_reset/',
+        auth_views.PasswordResetView.as_view(
+            template_name='users/password_reset.html',
+            success_url='password_reset_confirm/<uidb64>/<token>'), 
+        name='password_reset'),
+    path('password_reset_done/',
+        auth_views.PasswordResetDoneView.as_view(template_name='users/password_reset_done.html'), 
+        name='password_reset_done'),
+    path('password_reset_confirm/<uidb64>/<token>', 
+        auth_views.PasswordResetConfirmView.as_view(template_name='users/password_reset_confirm.html'), 
+        name='password_reset_confirm'),
     path('profile/', user_views.profile, name='user_profile'),
-    path('detail_profile/<int:pk>', user_views.UserDetailView.as_view(template_name='users/detail_profile.html'), name='detail_profile')
+    path('detail_profile/<int:pk>', 
+        user_views.UserDetailView.as_view(template_name='users/detail_profile.html'), 
+        name='detail_profile')
     
 ]
 
