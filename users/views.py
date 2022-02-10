@@ -1,4 +1,8 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import( 
+  render, 
+  redirect, 
+  get_object_or_404
+  )
 from django.contrib import messages
 from blog.models import Post
 from django.contrib.auth.models import User
@@ -8,7 +12,10 @@ from .forms import (
   UserUpdateForm)
 from django.views.generic import ListView
 from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator, InvalidPage
+from django.core.paginator import( 
+  Paginator, 
+  InvalidPage
+  )
 
 def register(request):
 
@@ -45,7 +52,8 @@ def profile(request):
   else:
     u_form = UserUpdateForm(instance=request.user)
     p_form = ProfileUpdateForm(instance=request.user.profile)
-
+  
+  ##pagination here
   posts = Post.objects.filter(author=request.user).order_by('date_posted').reverse()
   posts_per_page = 5
   is_paginated = False
