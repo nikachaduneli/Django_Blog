@@ -1,3 +1,4 @@
+import email
 from django.shortcuts import( 
   render, 
   redirect, 
@@ -16,6 +17,12 @@ from django.core.paginator import(
   Paginator, 
   InvalidPage
   )
+from django.contrib.auth.views import (
+  PasswordResetView,
+  PasswordResetDoneView,
+  PasswordResetConfirmView,
+  PasswordResetCompleteView
+  )  
 
 def register(request):
 
@@ -87,8 +94,8 @@ class UserDetailView(ListView):
   paginate_by = 5
 
   def get_context_data(self, **kwargs):
-    user = get_object_or_404(User, id=self.kwargs.get('pk'))
     context = super().get_context_data(**kwargs)
+    user = get_object_or_404(User, id=self.kwargs.get('pk'))
     context['title'] = f'{user}s\' Profile'
     context['user'] = user
     return context
