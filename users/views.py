@@ -1,4 +1,3 @@
-import email
 from django.shortcuts import( 
   render, 
   redirect, 
@@ -17,12 +16,6 @@ from django.core.paginator import(
   Paginator, 
   InvalidPage
   )
-from django.contrib.auth.views import (
-  PasswordResetView,
-  PasswordResetDoneView,
-  PasswordResetConfirmView,
-  PasswordResetCompleteView
-  )  
 
 def register(request):
 
@@ -31,16 +24,27 @@ def register(request):
     form = UserRegisterForm(request.POST)
     
     if form.is_valid():
+      #check if email is already in use
+      email = form.cleaned_data.get('email')
+      email = User.objects.filter(email=email).first()
+      
+      if email:
+        messages.warning(request, 'This email Is Already In Use By Another User.')
+        return redirect('user_register')
+
       username = form.cleaned_data.get('username')
       messages.success(request, f'{username} Account Has Been created')
       form.save()
       return redirect('user_login')
+  
   else:
     form = UserRegisterForm()
+  
   context = {
     'form':form,
     'title':'Registration'
     }
+
   return render(request, 'users/register.html',context=context )
 
 @login_required(login_url='user_login')
@@ -51,11 +55,13 @@ def profile(request):
     p_form = ProfileUpdateForm(request.POST, 
                                request.FILES, 
                                instance=request.user.profile)
+    
     if u_form.is_valid and p_form.is_valid:
       u_form.save()
       p_form.save()
       messages.success(request, 'Your Profile Has Been Updated.')
       return redirect('user_profile')                           
+  
   else:
     u_form = UserUpdateForm(instance=request.user)
     p_form = ProfileUpdateForm(instance=request.user.profile)
@@ -79,10 +85,11 @@ def profile(request):
     'u_form':u_form,
     'p_form':p_form,
     'title':f'{request.user.username}\'s Profile',
-    'posts': posts,
-    'page_obj':page_obj,
-    'is_paginated':is_paginated
   }
+  if is_paginated:
+    context['posts']=posts
+    context['page_obj'] = page_obj
+    context['is_paginated'] = is_paginated
   
   return render(request, 'users/profile.html', context=context)
 
@@ -101,6 +108,6 @@ class UserDetailView(ListView):
     return context
 
   def get_queryset(self):
-    user = get_object_or_404(User, id=self.kwargs.get('pk'))
+    user = get_object_or_404(User, id=self.kwargs.get('pk')) 
     return Post.objects.filter(author=user).order_by('date_posted').reverse()    
 

@@ -13,26 +13,27 @@ from django.views.generic import (
   DeleteView
   )
 
-
 class PostListView(ListView):
   model = Post
   template_name = 'blog/home.html'
   context_object_name = 'posts'
   ordering = ['-date_posted']
-  users = User.objects.all().order_by('date_joined').reverse()
-  extra_context = {
-    'title': 'Home', 
-    'users':users
-    }
   paginate_by=5
+  
+  def get_context_data(self, **kwargs):
+    context = super().get_context_data(**kwargs)
+    users = User.objects.all().order_by('date_joined').reverse()
+    context['users'] = users
+    context['title'] = 'Home'
+    return context
 
 class PostDetailViev(DetailView):
   model = Post
 
   def get_context_data(self, **kwargs):
-      context =  super().get_context_data(**kwargs)
-      context['title'] = self.object.title
-      return context
+    context =  super().get_context_data(**kwargs)
+    context['title'] = self.object.title
+    return context
 
 class PostCreateView(LoginRequiredMixin ,CreateView):
   model = Post
@@ -53,10 +54,10 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     return super().form_valid(form)
 
   def test_func(self):
-      post = self.get_object()
-      if self.request.user == post.author: 
-        return True
-      return False
+    post = self.get_object()
+    if self.request.user == post.author: 
+      return True
+    return False
 
   def get_context_data(self, **kwargs):
     context = super().get_context_data(**kwargs)
@@ -74,10 +75,10 @@ class PostDeleteiew(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     return context
 
   def test_func(self):
-      post = self.get_object()
-      if self.request.user == post.author:
-        return True
-      return False 
+    post = self.get_object()
+    if self.request.user == post.author:
+      return True
+    return False 
 
 def about(request):
   return render(request,"blog/about.html",{'title':'about'})   
