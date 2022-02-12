@@ -1,7 +1,7 @@
 # Django_Blog
 Web Application
 
-
+# <br>
 
 pip install django 
 
