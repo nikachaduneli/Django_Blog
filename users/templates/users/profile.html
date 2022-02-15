@@ -27,6 +27,13 @@
           {%else%}
             <p class="article-content">{{post.content}}</p>
           {%endif%}
+      
+          <!-- COMMENTS -->
+          {% if post.comments.all.count != 0  %}
+            <a href="{% url 'post_detail' post.id %}">see {{post.comments.all.count}} comment </a>
+          {% else %}
+            <p> No comments. <a href="{% url 'post_detail' post.id %}">Add One.</a></p>
+          {% endif %}
         </div>
       </article>
   {% endfor %}

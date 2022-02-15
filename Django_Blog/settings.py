@@ -120,7 +120,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = 'blog_home'
 LOGIN_URL= 'user_login'
 STATIC_URL = '/static/'
-STATIC_ROOT = '/home/nikachaduneli/Django_Blog/static'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 

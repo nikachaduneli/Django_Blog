@@ -1,9 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import(  
   LoginRequiredMixin,
   UserPassesTestMixin
   )
 from .models import Post
+from django.urls import reverse
 from django.contrib.auth.models import User
 from django.views.generic import (
   ListView, 
@@ -12,6 +13,9 @@ from django.views.generic import (
   UpdateView,
   DeleteView
   )
+from .forms import CommentForm  
+from django.contrib import messages
+
 
 class PostListView(ListView):
   model = Post
@@ -27,12 +31,23 @@ class PostListView(ListView):
     context['title'] = 'Home'
     return context
 
-class PostDetailViev(DetailView):
+class PostDetailViev(LoginRequiredMixin, DetailView):
   model = Post
+  form = CommentForm
+
+  def post(self, request, *args, **kwargs):
+    form = CommentForm(request.POST)
+    if form.is_valid():
+      post = self.get_object()
+      form.instance.author = request.user
+      form.instance.post = post
+      form.save()
+      return redirect('post_detail',pk=post.id)
 
   def get_context_data(self, **kwargs):
     context =  super().get_context_data(**kwargs)
     context['title'] = self.object.title
+    context['form'] = self.form
     return context
 
 class PostCreateView(LoginRequiredMixin ,CreateView):

@@ -2,30 +2,36 @@
 
 {% block content %}
     {% for post in posts %}
-        <article class="content-section" style="display: -webkit-box;">
-          {%if user == post.author%}
-            <a href="{% url 'user_profile'%}?page=1"><img src="{{ post.author.profile.image.url }}" alt="Profile Picture" class="rounded-circle article-img"></a>
-          {% else %}
-            <a href="{% url 'detail_profile' post.author.id%}"><img src="{{ post.author.profile.image.url }}" alt="Profile Picture" class="rounded-circle article-img"></a>
-          {% endif %}
-          <div class="media-body form-group">
-            <div class="article-metadata">
-              {%if user == post.author%}
-                <a class="mr-2" href="{%url 'user_profile' %}?page=1">{{ post.author }}</a>
-              {% else %}
-                <a class="mr-2" href="{%url 'detail_profile' post.author.id %}">{{ post.author }}</a>
-              {% endif %}  
-              <small class="text-muted">{{ post.date_posted|date:"d, M, Y "  }}</small>
-            </div>
-            <h2><a class="article-title" href="{% url 'post_detail' post.id%}">{{ post.title }}</a></h2>
-            {%if post.content|length > 30 %}
-              <p class="article-content">{{post.content|truncatechars:50 }}</p>
-            {%else%}
-              <p class="article-content">{{post.content}}</p>
-            {%endif%}
-
+      <article class="content-section" style="display: -webkit-box;">
+        {%if user == post.author%}
+          <a href="{% url 'user_profile'%}?page=1"><img src="{{ post.author.profile.image.url }}" alt="Profile Picture" class="rounded-circle article-img"></a>
+        {% else %}
+          <a href="{% url 'detail_profile' post.author.id%}"><img src="{{ post.author.profile.image.url }}" alt="Profile Picture" class="rounded-circle article-img"></a>
+        {% endif %}
+        <div class="media-body form-group">
+          <div class="article-metadata">
+            {%if user == post.author%}
+              <a class="mr-2" href="{%url 'user_profile' %}?page=1">{{ post.author }}</a>
+            {% else %}
+              <a class="mr-2" href="{%url 'detail_profile' post.author.id %}">{{ post.author }}</a>
+            {% endif %}  
+            <small class="text-muted">{{ post.date_posted|date:"d, M, Y "  }}</small>
           </div>
-        </article>
+          <h2><a class="article-title" href="{% url 'post_detail' post.id%}">{{ post.title }}</a></h2>
+          {%if post.content|length > 30 %}
+            <p class="article-content">{{post.content|truncatechars:50 }}</p>
+          {%else%}
+            <p class="article-content">{{post.content}}</p>
+          {%endif%}
+
+          <!-- COMENTS -->
+          {% if post.comments.all.count != 0  %}
+            <a href="{% url 'post_detail' post.id %}">see {{post.comments.all.count}} comment </a>
+          {% else %}
+            <p> No comments. <a href="{% url 'post_detail' post.id %}">Add One.</a></p>
+          {% endif %}
+        </div>
+      </article>
     {% endfor %}
 
     <!-- PAGINATION -->
@@ -42,7 +48,7 @@
           {% endif %}
         {% endfor %}
         {% if page_obj.has_next %}
-        <a href="?page={{ page_obj.next_page_number }}" class='btn btn-outline-info mb-4' >></a>
+          <a href="?page={{ page_obj.next_page_number }}" class='btn btn-outline-info mb-4' >></a>
           <a href="?page={{page_obj.paginator.num_pages}}" class='btn btn-outline-info mb-4' >>></a>
         {% endif %}
       
