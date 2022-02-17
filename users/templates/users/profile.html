@@ -22,11 +22,11 @@
             <small class="text-muted">{{ post.date_posted|date:"d, F, Y " }}</small>
           </div>
           <h2><a class="article-title" href="{% url 'post_detail' post.id %}">{{post.title}}</a></h2>
-          {%if post.content|length > 30 %}
+          {% if post.content|length > 30 %}
             <p class="article-content">{{post.content|truncatechars:50 }}</p>
-          {%else%}
+          {% else %}
             <p class="article-content">{{post.content}}</p>
-          {%endif%}
+          {% endif %}
       
           <!-- COMMENTS -->
           {% if post.comments.all.count != 0  %}

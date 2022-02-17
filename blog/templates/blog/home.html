@@ -3,14 +3,14 @@
 {% block content %}
     {% for post in posts %}
       <article class="content-section" style="display: -webkit-box;">
-        {%if user == post.author%}
+        {% if user == post.author%}
           <a href="{% url 'user_profile'%}?page=1"><img src="{{ post.author.profile.image.url }}" alt="Profile Picture" class="rounded-circle article-img"></a>
         {% else %}
           <a href="{% url 'detail_profile' post.author.id%}"><img src="{{ post.author.profile.image.url }}" alt="Profile Picture" class="rounded-circle article-img"></a>
         {% endif %}
         <div class="media-body form-group">
           <div class="article-metadata">
-            {%if user == post.author%}
+            {% if user == post.author%}
               <a class="mr-2" href="{%url 'user_profile' %}?page=1">{{ post.author }}</a>
             {% else %}
               <a class="mr-2" href="{%url 'detail_profile' post.author.id %}">{{ post.author }}</a>
@@ -18,17 +18,21 @@
             <small class="text-muted">{{ post.date_posted|date:"d, M, Y "  }}</small>
           </div>
           <h2><a class="article-title" href="{% url 'post_detail' post.id%}">{{ post.title }}</a></h2>
-          {%if post.content|length > 30 %}
+          {% if post.content|length > 30 %}
             <p class="article-content">{{post.content|truncatechars:50 }}</p>
-          {%else%}
+          {% else %}
             <p class="article-content">{{post.content}}</p>
-          {%endif%}
+          {% endif %}
 
           <!-- COMENTS -->
           {% if post.comments.all.count != 0  %}
             <a href="{% url 'post_detail' post.id %}">see {{post.comments.all.count}} comment </a>
           {% else %}
-            <p> No comments. <a href="{% url 'post_detail' post.id %}">Add One.</a></p>
+            <p> No comments yet. 
+              <a href="{% url 'post_detail' post.id %}">
+                <button class="btn-outline-secondary">Add One.</button>
+              </a>
+            </p>
           {% endif %}
         </div>
       </article>
@@ -56,7 +60,7 @@
 {% endblock content %}
 
 {% block side_content %}
-  {%if users%}
+  {% if users%}
     <div class="content-section">
       <h3 class="article-title">Other Users</h3>
       <p class='text-muted'>
@@ -64,14 +68,14 @@
           {% for userr in users%}
             <div class="user-list-group-item">
 
-            {%if userr != user%}
+            {% if userr != user%}
               <a href="{% url 'detail_profile' userr.id  %}"><img src="{{userr.profile.image.url}}" class="rounded-circle user-list-img" alt="profile picture"></a>
               <a class="user-list-group-item-title" href="{% url 'detail_profile' userr.id  %}">{{userr}}</a>
-            {%endif%}
+            {% endif %}
             </div>
-          {%endfor%}
+          {% endfor %}
         </ul>
       </p>
     </div>
-  {%endif%}
+  {% endif %}
 {% endblock side_content %}

@@ -17,12 +17,19 @@ from .forms import CommentForm
 from django.contrib import messages
 
 
+
+class PostSearch(ListView):
+  def get(self, request, *args, **kwargs):
+    query = request.GET.get('query')
+    result = Post.objects.filter(title__icontains=query)
+    return render(request, 'blog/home.html', {'posts':result,'title':'search'})
+
 class PostListView(ListView):
   model = Post
   template_name = 'blog/home.html'
   context_object_name = 'posts'
   ordering = ['-date_posted']
-  paginate_by=5
+  paginate_by = 5
   
   def get_context_data(self, **kwargs):
     context = super().get_context_data(**kwargs)

@@ -12,7 +12,7 @@
         </div>
         <h2 class="article-title">{{ post.title }}</h2>
         <p class="article-content">{{ post.content }}</p>
-        {%if object.author.id == user.id %}
+        {% if object.author.id == user.id %}
           <div class="form-group" style="position: relative;float: right;">
             <a class="btn button" href="{% url 'post_update' object.id %}" >Update Note</a>
             <a class="btn btn-outline-danger" href="{% url 'post_delete' object.id %}" >Delete Note</a>
