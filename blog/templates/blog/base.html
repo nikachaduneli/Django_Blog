@@ -40,13 +40,11 @@
               {% if title == "Home" or title == "Search" %}
                 <form method="GET" action="{% url 'search' %}"> 
                   <div class="input-group " >
-                    <input type="text" class="form-control" name="query" placeholder="Search..." aria-label="Search" aria-describedby="basic-addon2">
+                    <input type="text" class="form-control" name="query" placeholder="Search..." >
                     <div class="input-group-append">
                       <button class="btn btn-outline-secondary" type="submit">Search</button>
                     </div>
                   </div>
-                  {% comment %} <input type="text" name="query" placeholder="Search..."> {% endcomment %}
-                  {% comment %} <input type="image" class="search-button" src="https://www.pngmart.com/files/8/Search-Button-PNG-HD-Photo.png"> {% endcomment %}                
                 </form>
               {% endif %}
               {% if user.is_authenticated %}
