@@ -22,7 +22,7 @@
   </article>
   <h1>Comments({{post.comments.all.count}})</h1>
   {% if post.comments.all.count != 0  %}
-    <ul class="list-group">
+    <ul class="list-group" >
       {% for comment in post.comments.all %}
         <div class="comment" style="display: -webkit-box">
           <a href="{% url 'detail_profile' comment.author.id %}">
@@ -41,9 +41,9 @@
   {% else %}
     <p> No comments yet</p>
   {% endif %}
-  <form method="POST" action="{%url 'post_detail' post.id%}" >
+  <form method="POST" onsubmit="submit_button.disabled=true; return true;" action="{%url 'post_detail' post.id%}" >
     {% csrf_token %}
     {{form}}</br>
-    <button type="submit" class="btn button">Add Comment</button>
+    <button type="submit" class="btn button"  value="Submit" name="submit_button">Add Comment</button>
   </form>
 {% endblock %}

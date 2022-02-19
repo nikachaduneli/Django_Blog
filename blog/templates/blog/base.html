@@ -13,7 +13,7 @@
 
     <link rel="stylesheet" type="text/css" href="{% static 'blog/main.css' %}">
     <link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA
-    /4QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABEQABEQAAAAABAAEAAAAAAAEAAQAAAAAAAREREAAAAAARAAAQAAAAABAAABAAAAAAEAAAEAAAAAERAREREAAAAQEREQAQAAABABEQARAAAAEAERABAAAAEQAAAAEQAAAAAAAAAAAAAAAAAAAAAAD//wAA//8AAOOPAAD7vwAA+78AAPgfAADz3wAA998AAPffAADiBwAA6DcAAOxnAADsbwAAz+cAAP//AAD//wAA" rel="icon" type="image/x-icon" />
+    /4QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABEQABEQAAAAABAAEAAAAAAAEAAQAAAAAAAREREAAAAAARAAAQAAAAABAAABAAAAAAEAAAEAAAAAERAREREAAAAQEREQAQAAABABEQARAAAAEAERABAAAAEQAAAAEQAAAAAAAAAAAAAAAAAAAAAAD//wAA//8AAOOPAAD7vwAA+78AAPgfAADz3wAA998AAPffAADiBwAA6DcAAOxnAADsbwAAz+cAAP//AAD//wAA" rel="shourtcut icon" type="image/x-icon" />
   
     {% if title %}
         <title>{{ title }}</title>
@@ -32,12 +32,14 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarToggle">
             <div class="navbar-nav mr-auto">  
-              <a class="nav-item nav-link" href="{% url 'blog_about' %}">About</a>
+              <!--
+                <a class="nav-item nav-link" href="{% url 'blog_about' %}">About</a>
+              -->
             </div>
             <!-- Navbar Right Side -->  
             <div class="navbar-nav">
               <!--Search form -->
-              {% if title == "Home" or title == "Search" %}
+              {% if search %}
                 <form method="GET" action="{% url 'search' %}"> 
                   <div class="input-group " >
                     <input type="text" class="form-control" name="query" placeholder="Search..." >

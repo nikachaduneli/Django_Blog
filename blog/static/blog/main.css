@@ -101,6 +101,7 @@ color: #007bff
   display: flex;
   background-color: #1f2836;
   border-radius: 10px;
+  padding-right: 1rem;
 }
 .comment-child {
   flex: 1;

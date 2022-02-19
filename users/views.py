@@ -85,6 +85,7 @@ def profile(request):
     'u_form':u_form,
     'p_form':p_form,
     'title':f'{request.user.username}\'s Profile',
+    'search':True,
   }
   if is_paginated:
     context['posts']=posts
@@ -105,6 +106,7 @@ class UserDetailView(ListView):
     user = get_object_or_404(User, id=self.kwargs.get('pk'))
     context['title'] = f'{user}s\' Profile'
     context['user'] = user
+    context['search'] = True
     return context
 
   def get_queryset(self):

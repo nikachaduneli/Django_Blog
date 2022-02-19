@@ -14,7 +14,6 @@ from django.views.generic import (
   DeleteView
   )
 from .forms import CommentForm  
-from django.contrib import messages
 
 
 
@@ -22,20 +21,21 @@ class PostSearch(ListView):
   def get(self, request, *args, **kwargs):
     query = request.GET.get('query')
     result = Post.objects.filter(title__icontains=query)
-    return render(request, 'blog/home.html', {'posts':result,'title':'search'})
+    return render(request, 'blog/home.html', {'posts':result,'search':True})
 
 class PostListView(ListView):
   model = Post
   template_name = 'blog/home.html'
   context_object_name = 'posts'
   ordering = ['-date_posted']
-  paginate_by = 5
+  paginate_by = 10
   
   def get_context_data(self, **kwargs):
     context = super().get_context_data(**kwargs)
     users = User.objects.all().order_by('date_joined').reverse()
     context['users'] = users
     context['title'] = 'Home'
+    context['search'] = True
     return context
 
 class PostDetailViev(LoginRequiredMixin, DetailView):
@@ -55,6 +55,7 @@ class PostDetailViev(LoginRequiredMixin, DetailView):
     context =  super().get_context_data(**kwargs)
     context['title'] = self.object.title
     context['form'] = self.form
+    context['search'] = True
     return context
 
 class PostCreateView(LoginRequiredMixin ,CreateView):
@@ -102,6 +103,7 @@ class PostDeleteiew(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
       return True
     return False 
 
+##TODO##
 def about(request):
   return render(request,"blog/about.html",{'title':'about'})   
 
