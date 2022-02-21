@@ -93,6 +93,16 @@ a .article-img:hover{
 .content-section a:hover{
 color: #007bff
 }
+.comment {
+  margin:2px;
+  display: flex;
+  background-color: #1f2836;
+  border-radius: 10px;
+}
+.comment-child {
+  flex: 1;
+  margin:10px;
+}
 .comment-user-img {
   height: 30px;
   width: 30px;

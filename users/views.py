@@ -87,6 +87,7 @@ def profile(request):
     'title':f'{request.user.username}\'s Profile',
     'search':True,
   }
+  
   if is_paginated:
     context['posts']=posts
     context['page_obj'] = page_obj
@@ -112,4 +113,3 @@ class UserDetailView(ListView):
   def get_queryset(self):
     user = get_object_or_404(User, id=self.kwargs.get('pk')) 
     return Post.objects.filter(author=user).order_by('date_posted').reverse()    
-
