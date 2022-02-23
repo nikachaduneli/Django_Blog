@@ -101,7 +101,7 @@ def profile(request):
 class UserDetailView(ListView):
 
   model = Post
-  template_name='blog/detail_profile.html'
+  template_name = 'blog/detail_profile.html'
   context_object_name = 'posts'
   paginate_by = 5
 
