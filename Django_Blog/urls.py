@@ -10,17 +10,18 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('register/', user_views.register, name='user_register'),
-    path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='user_login' ),
-    path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='user_logout' ),
+    path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='user_login'),
+    path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='user_logout'),
 
     path('profile/', user_views.profile, name='user_profile'),
-    path('detail_profile/<int:pk>', user_views.UserDetailView.as_view(template_name='users/detail_profile.html'), name='detail_profile'),
+    path('detail_profile/<int:pk>', user_views.UserDetailView.as_view(template_name='users/detail_profile.html'),
+         name='detail_profile'),
 
     path('password_reset/',
          auth_views.PasswordResetView.as_view(
              template_name='users/password_reset.html'),
          name='password_reset'),
-         
+
     path('password_reset_done/',
          auth_views.PasswordResetDoneView.as_view(
              template_name='users/password_reset_done.html'),
@@ -33,15 +34,13 @@ urlpatterns = [
 
     path('password_reset_complete/',
          auth_views.PasswordResetCompleteView.as_view(
-            template_name='users/password_reset_complete.html'),
-         name='password_reset_complete'),          
+             template_name='users/password_reset_complete.html'),
+         name='password_reset_complete'),
 ]
 
 if settings.DEBUG:
-        urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler404 = 'blog.views.error404'
 handler500 = 'blog.views.error500'
 handler403 = 'blog.views.error403'
-
-
