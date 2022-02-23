@@ -1,8 +1,5 @@
-from django.shortcuts import( 
-  render, 
-  redirect, 
-  get_object_or_404
-  )
+from django.views.generic import ListView
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from blog.models import Post
 from django.contrib.auth.models import User
@@ -10,12 +7,34 @@ from .forms import (
   UserRegisterForm, 
   ProfileUpdateForm, 
   UserUpdateForm)
-from django.views.generic import ListView
-from django.contrib.auth.decorators import login_required
 from django.core.paginator import( 
   Paginator, 
   InvalidPage
   )
+from django.shortcuts import( 
+  render, 
+  redirect, 
+  get_object_or_404
+  )
+
+
+def paginate_posts(paginate_by, Model, request):
+  
+  posts = Model.objects.filter(author=request.user).order_by('date_posted').reverse()
+  is_paginated=False
+
+  if posts.count() > paginate_by:
+    page = request.GET.get('page', 1)
+    paginator = Paginator(posts, paginate_by)
+    page_obj = paginator.get_page(page)
+    try:
+      posts = paginator.page(page)
+    except InvalidPage:
+      posts = paginator.page(1)  
+    is_paginated = True 
+  
+  return {'is_paginated':is_paginated,'page_obj':page_obj,'posts':posts}
+
 
 def register(request):
 
@@ -47,6 +66,7 @@ def register(request):
 
   return render(request, 'users/register.html',context=context )
 
+
 @login_required(login_url='user_login')
 def profile(request):
 
@@ -66,34 +86,17 @@ def profile(request):
     u_form = UserUpdateForm(instance=request.user)
     p_form = ProfileUpdateForm(instance=request.user.profile)
   
-  ##pagination here
-  posts = Post.objects.filter(author=request.user).order_by('date_posted').reverse()
-  posts_per_page = 5
-  is_paginated = False
-
-  if len(posts) > posts_per_page:
-    page = request.GET.get('page',1)
-    paginator = Paginator(posts,posts_per_page)
-    page_obj = paginator.get_page(page)
-    try:
-      posts = paginator.page(page)
-    except InvalidPage:
-      posts = paginator.page(1)  
-    is_paginated = True  
-  
   context={
     'u_form':u_form,
     'p_form':p_form,
     'title':f'{request.user.username}\'s Profile',
     'search':True,
   }
-  
-  if is_paginated:
-    context['posts']=posts
-    context['page_obj'] = page_obj
-    context['is_paginated'] = is_paginated
+ 
+  context.update(paginate_posts(paginate_by=5, Model=Post, request=request))
   
   return render(request, 'users/profile.html', context=context)
+
 
 class UserDetailView(ListView):
 
