@@ -1,5 +1,5 @@
 # Default ignored files
 /shelf/
 /workspace.xml
-../db.sqlite3
-../__pycache__/
+db.sqlite3
+__pycache__/
