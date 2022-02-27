@@ -32,7 +32,11 @@
           {% if post.comments.all.count != 0  %}
             <a href="{% url 'post_detail' post.id %}">see {{post.comments.all.count}} comment </a>
           {% else %}
-            <p> No comments. <a href="{% url 'post_detail' post.id %}">Add One.</a></p>
+            <p> No comments yet. 
+              <a href="{% url 'post_detail' post.id %}">
+                <button class="btn-outline-secondary">Add One.</button>
+              </a>
+            </p>
           {% endif %}
         </div>
       </article>

@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Post
 from django.contrib.auth.models import User
+from .forms import CommentForm
 from django.contrib.auth.mixins import (
     LoginRequiredMixin,
     UserPassesTestMixin
@@ -12,7 +13,6 @@ from django.views.generic import (
     UpdateView,
     DeleteView
 )
-from .forms import CommentForm
 
 
 class PostSearch(ListView):
